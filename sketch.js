@@ -3,9 +3,15 @@ var recording;
 var maskImage;
 var bg;
 var bg2;
+var bg3;
+var bg3small;
+var bg5;
+var bg5small;
 var y;
 var state;
 var speed;
+var outspeed;
+var myText;
 
 var fillval1;
 var fillval2;
@@ -17,10 +23,16 @@ var overBox;
 var locked;
 var xOffset; 
 var yOffset; 
+var boxnum
 
 function preload() {
    bg = loadImage("disc1.png");
-   bg2 = loadImage("disc1.png");   
+   bg2 = loadImage("disc1.png");  
+   bg3 = loadImage("disc3.jpeg");
+   bg3small = loadImage("disc3.jpeg");
+   bg5 = loadImage("disc5.png");
+   bg5small = loadImage("disc5.png");   
+
  }
 
 function setup() {
@@ -29,7 +41,11 @@ function setup() {
   //noLoop();
 //bg = loadImage("disc1.jpg");
   bg.resize(500, 500);
-  bg2.resize(50, 50);
+  bg2.resize(80, 80);
+  bg3.resize(500, 500);
+  bg3small.resize(80, 80);
+  bg5.resize(500, 500);
+  bg5small.resize(80, 80);
 
   fillval1 = color(0,200,0,80);
   fillval2 = color(0,200,0);
@@ -46,19 +62,41 @@ locked = false;
 
 bx = 50;
 by=50;
+  // creat mask
+   maskImage = createGraphics(500,500);
+ // maskImage.beginDraw();
+  //maskImage.triangle(30, 480, 256, 30, 480, 480);
+  maskImage.ellipse(500/2,500/2,500,500);
+  //maskImage.endDraw();
+  // apply mask; mask and image needs to be the same size
+  bg.mask(maskImage); 
+  bg3.mask(maskImage);
+  bg5.mask(maskImage); 
 }
 
 function draw() {  
-  background(255,200,50);
+    background(255,200,50);
   strokeWeight(10);
   stroke(0);
   noFill();  
   rect(0,0,width,height);
+  
+  
+  // some text
+  strokeWeight(0.5);
+  textFont('Helvetica');
+  textSize(24);
+  fill(0);  
+  outspeed = 60*speed/(2*PI);
+  myText = "Speed: " + nf(outspeed,1,2) + " rotations/s";
+  text(myText, 700, 30); 
 
   // small disks
-  image(bg2,bx,by);
-
-    // needle
+  image(bg2,bx-bg2.width/2,by-bg2.height/2);
+  image(bg3small,bx-bg3small.width/2,by+100-bg3small.height/2);
+  image(bg5small,bx-bg5small.width/2,by+200-bg5small.height/2);
+  
+  // needle
   strokeWeight(10);
   stroke(0);
   rect(800,100,50,100); 
@@ -75,7 +113,7 @@ function draw() {
       rect(900,600,50,20);
     }
     
-   if(!locked){ 
+   if(!locked  | boxnum==0){ 
   // empty player
   strokeWeight(20);
   stroke(0);
@@ -92,36 +130,25 @@ function draw() {
   fill(127);
   ellipse(width/2,height/2,10,10);  
    }
-
-  // Test if the cursor is over the box 
-  if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
-      mouseY > by-boxSize && mouseY < by+boxSize) {
-    overBox = true;  
-    if(!locked) { 
-      stroke(255); 
-      fill(153);
-    } 
-  } else {
-    stroke(153);
-    fill(153);
-    overBox = false;
-  }
-  
-  
+   
 // rotaing disk
 translate(width/2, height/2);
 rotate(state);
 if(locked==true){
+  if(boxnum == 1){
 image(bg,  -bg.width/2,-bg.height/2, bg.width/1, bg.height/1);
+  } else if(boxnum == 2){
+image(bg3,  -bg3.width/2,-bg3.height/2, bg3.width/1, bg3.height/1);    
+} else if(boxnum == 3){
+image(bg5,  -bg5.width/2,-bg5.height/2, bg5.width/1, bg5.height/1);    
 }
  state = state+(speed);
-
- //   if (recording) {
- //   saveFrame("frames/frames####.png");
- // }
-//image(bg,100,100,500,500);
 }
+    if (recording) {
+    saveFrame("frames/frames####.png");
+  }
 
+}
 
 // add speed control via keys up and down
 function keyPressed() {
@@ -144,22 +171,39 @@ function keyPressed() {
   }
 }
 
+// add speed control via keys up and down
 function mousePressed() {
-  if(overBox) { 
-    locked = true; 
-    fill(255, 255, 255);
-  } else {
-    locked = false;
+    if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
+      mouseY > by-boxSize && mouseY < by+boxSize) {
+    overBox = true; 
+    boxnum  = 1;
+    locked = true;
+    speed = 0;
+    } else   if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
+      mouseY > by+100-boxSize && mouseY < by+100+boxSize) {
+    overBox = true; 
+    boxnum  = 2;
+    locked = true;   
+    speed = 0;
+  } else   if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
+      mouseY > by+200-boxSize && mouseY < by+200+boxSize) {
+    overBox = true; 
+    boxnum  = 3;
+    locked = true;   
+    speed = 0;
   }
-  xOffset = mouseX-bx; 
-  yOffset = mouseY-by; 
-
+  else {
+   locked = false;
+   speed = 0;
+  }
+  //xOffset = mouseX-bx; 
+  //yOffset = mouseY-by; 
 }
 
 function mouseDragged() {
   if(locked) {
-    bx = mouseX-xOffset; 
-    by = mouseY-yOffset; 
+    //bx = mouseX-xOffset; 
+    //by = mouseY-yOffset; 
   }
 }
 
