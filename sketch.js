@@ -1,6 +1,9 @@
 var recording;
 
+var ph;
+var ph2;
 var maskImage;
+var maskImage2;
 var bg;
 var bg2;
 var bg3;
@@ -23,7 +26,8 @@ var overBox;
 var locked;
 var xOffset; 
 var yOffset; 
-var boxnum
+var boxnum;
+var canvas;
 
 function preload() {
    bg = loadImage("disc1.png");
@@ -36,10 +40,11 @@ function preload() {
  }
 
 function setup() {
-  createCanvas(1000, 650);
+  canvas = createCanvas(1000, 650);
+  canvas.drop(gotfile);
+
   frameRate(60);
-  //noLoop();
-//bg = loadImage("disc1.jpg");
+
   bg.resize(500, 500);
   bg2.resize(80, 80);
   bg3.resize(500, 500);
@@ -72,10 +77,20 @@ by=50;
   bg.mask(maskImage); 
   bg3.mask(maskImage);
   bg5.mask(maskImage); 
+  bg3small.mask(maskImage); 
+  bg5small.mask(maskImage); 
+
+  maskImage2 = createGraphics(500,500);
+ // maskImage.beginDraw();
+  //maskImage.triangle(30, 480, 256, 30, 480, 480);
+  maskImage2.ellipse(500/2,500/2,500,500);
+  //maskImage.endDraw();
+  // apply mask; mask and image needs to be the same size  
 }
 
 function draw() {  
-    background(255,200,50);
+  background(255,200,50);
+
   strokeWeight(10);
   stroke(0);
   noFill();  
@@ -95,6 +110,10 @@ function draw() {
   image(bg2,bx-bg2.width/2,by-bg2.height/2);
   image(bg3small,bx-bg3small.width/2,by+100-bg3small.height/2);
   image(bg5small,bx-bg5small.width/2,by+200-bg5small.height/2);
+  if (ph){
+    ph.mask(maskImage2);  
+    image(ph, 10,310,80,80);      
+}
   
   // needle
   strokeWeight(10);
@@ -141,6 +160,8 @@ image(bg,  -bg.width/2,-bg.height/2, bg.width/1, bg.height/1);
 image(bg3,  -bg3.width/2,-bg3.height/2, bg3.width/1, bg3.height/1);    
 } else if(boxnum == 3){
 image(bg5,  -bg5.width/2,-bg5.height/2, bg5.width/1, bg5.height/1);    
+} else if(ph && boxnum==4){  
+image(ph,  -250,-250, 500, 500);    
 }
  state = state+(speed);
 }
@@ -191,6 +212,12 @@ function mousePressed() {
     boxnum  = 3;
     locked = true;   
     speed = 0;
+  } else   if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
+      mouseY > by+300-boxSize && mouseY < by+300+boxSize) {
+    overBox = true; 
+    boxnum  = 4;
+    locked = true;   
+    speed = 0;    
   }
   else {
    locked = false;
@@ -209,4 +236,8 @@ function mouseDragged() {
 
 function mouseReleased() {
   //locked = false;
+}
+
+function gotfile(file){
+ph = loadImage(file.data);
 }
