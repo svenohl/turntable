@@ -36,7 +36,6 @@ function preload() {
    bg3small = loadImage("disc3.jpeg");
    bg5 = loadImage("disc5.png");
    bg5small = loadImage("disc5.png");   
-
  }
 
 function setup() {
@@ -55,21 +54,22 @@ function setup() {
   fillval1 = color(0,200,0,80);
   fillval2 = color(0,200,0);
 
-boxSize = 75;
-xOffset = 0.0; 
-yOffset = 0.0; 
-state = 0;
-speed = 0;
+  boxSize = 80;
+  xOffset = 0.0; 
+  yOffset = 0.0; 
+  state   = 0;
+  speed   = 0;
+  bx      = 50;
+  by      = 50;
 
-recording = false;
-overBox = false;
-locked = false;
+  recording = false;
+  overBox   = false;
+  locked    = false;
 
-bx = 50;
-by=50;
-  // creat mask
-   maskImage = createGraphics(500,500);
- // maskImage.beginDraw();
+  // creat and apply masks
+  maskImage = createGraphics(500,500);
+  
+  // maskImage.beginDraw();
   //maskImage.triangle(30, 480, 256, 30, 480, 480);
   maskImage.ellipse(500/2,500/2,500,500);
   //maskImage.endDraw();
@@ -81,7 +81,7 @@ by=50;
   bg5small.mask(maskImage); 
 
   maskImage2 = createGraphics(500,500);
- // maskImage.beginDraw();
+  // maskImage.beginDraw();
   //maskImage.triangle(30, 480, 256, 30, 480, 480);
   maskImage2.ellipse(500/2,500/2,500,500);
   //maskImage.endDraw();
@@ -194,26 +194,26 @@ function keyPressed() {
 
 // add speed control via keys up and down
 function mousePressed() {
-    if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
-      mouseY > by-boxSize && mouseY < by+boxSize) {
+    if (mouseX > bx-boxSize/2 && mouseX < bx+boxSize/2 && 
+      mouseY > by-boxSize/2 && mouseY < by+boxSize/2) {
     overBox = true; 
     boxnum  = 1;
     locked = true;
     speed = 0;
-    } else   if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
-      mouseY > by+100-boxSize && mouseY < by+100+boxSize) {
+    } else   if (mouseX > bx-boxSize/2 && mouseX < bx+boxSize/2 && 
+      mouseY > by+100-boxSize/2 && mouseY < by+100+boxSize/2) {
     overBox = true; 
     boxnum  = 2;
     locked = true;   
     speed = 0;
-  } else   if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
-      mouseY > by+200-boxSize && mouseY < by+200+boxSize) {
+  } else   if (mouseX > bx-boxSize/2 && mouseX < bx+boxSize/2 && 
+      mouseY > by+200-boxSize/2 && mouseY < by+200+boxSize/2) {
     overBox = true; 
     boxnum  = 3;
     locked = true;   
     speed = 0;
-  } else   if (mouseX > bx-boxSize && mouseX < bx+boxSize && 
-      mouseY > by+300-boxSize && mouseY < by+300+boxSize) {
+  } else   if (mouseX > bx-boxSize/2 && mouseX < bx+boxSize/2 && 
+      mouseY > by+300-boxSize/2 && mouseY < by+300+boxSize/2) {
     overBox = true; 
     boxnum  = 4;
     locked = true;   
