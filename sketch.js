@@ -219,7 +219,7 @@ function mousePressed() {
     locked = true;   
     speed = 0;    
   } else   if (mouseX > 800 && mouseX < 1000 && 
-      mouseY > 450 && mouseY < 650) {
+      mouseY > 450 && mouseY < 650 && locked) {
     overBox = true; 
     locked = true;   
     speed = speed + 0.1;  }
