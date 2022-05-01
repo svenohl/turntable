@@ -225,6 +225,7 @@ function mousePressed() {
     speed = speed + 0.1;  }
   else {
    locked = false;
+   boxnum = 0;
    speed = 0;
   }
   //xOffset = mouseX-bx; 
